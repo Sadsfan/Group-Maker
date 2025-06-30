@@ -48,8 +48,7 @@ export default function GroupMakerTool() {
     if (savedChildren) {
       try {
         const loadedChildren = JSON.parse(savedChildren);
-        const updatedChildren = loadedChildren.map((child: any) => ({
-          ...child,
+const updatedChildren = loadedChildren.map((child: Child) => ({          ...child,
           keepApart: child.keepApart || []
         }));
         setChildren(updatedChildren);
@@ -271,7 +270,7 @@ export default function GroupMakerTool() {
   const generateGroups = () => {
     if (children.length === 0) return;
 
-    let newGroups: Group[] = [];
+    const newGroups: Group[] = [];
     
     if (groupType === 'mixed') {
       const shuffledChildren = [...children].sort(() => Math.random() - 0.5);
