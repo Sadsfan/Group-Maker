@@ -477,114 +477,50 @@ const clearForms = () => {
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
+     <div className="flex items-center justify-between mb-6">
   <h1 className="text-3xl font-bold text-green-600">Group Maker</h1>
-  <div className="flex items-center gap-2">
-    <label className="text-sm font-medium">Save as:</label>
-    <input
-      type="text"
-      value={saveFileName}
-      onChange={(e) => setSaveFileName(e.target.value)}
-      placeholder="filename"
-      className="px-2 py-1 border rounded text-sm w-40"
-    />
-    <span className="text-sm text-gray-500">.json</span>
+  <div className="flex items-center gap-6">
+    <div className="flex items-center gap-2">
+      <label className="text-sm font-medium">Save as:</label>
+      <input
+        type="text"
+        value={saveFileName}
+        onChange={(e) => setSaveFileName(e.target.value)}
+        placeholder="filename"
+        className="px-2 py-1 border rounded text-sm w-40"
+      />
+      <span className="text-sm text-gray-500">.json</span>
+      <button
+        onClick={downloadChildrenData}
+        className="ml-2 px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+        disabled={children.length === 0}
+      >
+        💾 Save Data
+      </button>
+    </div>
+    <div className="flex gap-3">
+      <button
+        onClick={() => exportFileInputRef.current?.click()}
+        className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+      >
+        📁 Load Data
+      </button>
+      <button
+        onClick={() => setShowClearConfirm(true)}
+        className="px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700"
+      >
+        🧹 Clear Forms
+      </button>
+      <button
+        onClick={clearAllData}
+        className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+        disabled={children.length === 0}
+      >
+        🗑️ Clear All
+      </button>
+    </div>
   </div>
 </div>
-        <div className="flex gap-2">
-          <button
-            onClick={downloadChildrenData}
-            className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-            disabled={children.length === 0}
-          >
-            💾 Save Data
-          </button>
-          <button
-            onClick={() => exportFileInputRef.current?.click()}
-            className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
-          >
-            📁 Load Data
-          </button>
-          <button
-            onClick={clearAllData}
-            className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
-            disabled={children.length === 0}
-          >
-            <button
-  onClick={() => setShowClearConfirm(true)}
-  className="px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700"
->
-  🧹 Clear Forms
-</button>
-            🗑️ Clear All
-          </button>
-        </div>
-      </div>
-
-      <input
-        ref={exportFileInputRef}
-        type="file"
-        accept=".json"
-        onChange={uploadChildrenData}
-        className="hidden"
-      />
-      
-      {showGenderModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
-            <h3 className="text-xl font-semibold mb-4">Assign Genders</h3>
-            <p className="text-gray-600 mb-4">
-              These names couldn&apos;t be automatically identified. Please assign genders:
-            </p>
-            <div className="space-y-3 mb-6 max-h-60 overflow-y-auto">
-              {pendingChildren.map((child) => (
-                <div key={child.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
-                  <span className="font-medium">{child.name}</span>
-                  <div className="flex gap-2">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name={`gender-${child.id}`}
-                        value="boy"
-                        checked={child.gender === 'boy'}
-                        onChange={() => updatePendingGender(child.id, 'boy')}
-                        className="mr-2"
-                      />
-                      Boy
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name={`gender-${child.id}`}
-                        value="girl"
-                        checked={child.gender === 'girl'}
-                        onChange={() => updatePendingGender(child.id, 'girl')}
-                        className="mr-2"
-                      />
-                      Girl
-                    </label>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={cancelGenderAssignment}
-                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmGenderAssignments}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Add All Children
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 {/* Clear Forms Confirmation Modal */}
       {showClearConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
