@@ -41,6 +41,8 @@ export default function GroupMakerTool() {
   const [unlimitedFriends, setUnlimitedFriends] = useState(false);
   const [unlimitedKeepApart, setUnlimitedKeepApart] = useState(false);
   const [groupType, setGroupType] = useState<'mixed' | 'single-sex'>('mixed');
+  const [saveFileName, setSaveFileName] = useState('group-maker-children');
+const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   // Load saved data on component mount
   useEffect(() => {
@@ -83,7 +85,15 @@ const updatedChildren = loadedChildren.map((child: Child) => ({          ...chil
     link.click();
     URL.revokeObjectURL(url);
   };
-
+const clearForms = () => {
+  setName('');
+  setGender('boy');
+  setNumGroups(3);
+  setGroupSizes([4, 4, 4]);
+  setGroupType('mixed');
+  setSaveFileName('group-maker-children');
+  setShowClearConfirm(false);
+};
   const uploadChildrenData = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -468,7 +478,20 @@ const updatedChildren = loadedChildren.map((child: Child) => ({          ...chil
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-green-600">Group Maker</h1>
+        <div className="flex items-center gap-4">
+  <h1 className="text-3xl font-bold text-green-600">Group Maker</h1>
+  <div className="flex items-center gap-2">
+    <label className="text-sm font-medium">Save as:</label>
+    <input
+      type="text"
+      value={saveFileName}
+      onChange={(e) => setSaveFileName(e.target.value)}
+      placeholder="filename"
+      className="px-2 py-1 border rounded text-sm w-40"
+    />
+    <span className="text-sm text-gray-500">.json</span>
+  </div>
+</div>
         <div className="flex gap-2">
           <button
             onClick={downloadChildrenData}
@@ -488,6 +511,12 @@ const updatedChildren = loadedChildren.map((child: Child) => ({          ...chil
             className="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
             disabled={children.length === 0}
           >
+            <button
+  onClick={() => setShowClearConfirm(true)}
+  className="px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700"
+>
+  🧹 Clear Forms
+</button>
             🗑️ Clear All
           </button>
         </div>
@@ -556,7 +585,31 @@ const updatedChildren = loadedChildren.map((child: Child) => ({          ...chil
           </div>
         </div>
       )}
-
+{/* Clear Forms Confirmation Modal */}
+      {showClearConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+            <h3 className="text-xl font-semibold mb-4">Clear Forms</h3>
+            <p className="text-gray-600 mb-6">
+              This will reset all form settings (group sizes, group type, etc.) but keep your children list. Are you sure?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowClearConfirm(false)}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={clearForms}
+                className="flex-1 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700"
+              >
+                Clear Forms
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mb-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
         <h2 className="text-xl font-semibold mb-4">Relationship Settings</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
